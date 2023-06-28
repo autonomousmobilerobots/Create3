@@ -44,8 +44,9 @@ function[dataStore] = backupBump(Robot,maxTime)
 global dataStore;
 
 % initialize datalog struct (customize according to needs)
-dataStore = struct('Odom', [], ...
-                   'Hzrd', []);
+dataStore = struct( 'truthPose', [],...
+                    'Odom', [], ...
+                    'Hzrd', []);
 
 
 % Variable used to keep track of whether the overhead localization "lost"

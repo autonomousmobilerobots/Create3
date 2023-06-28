@@ -18,7 +18,8 @@ setenv("ROS_DOMAIN_ID",string(Robot.ID));
 %     "Reliability","besteffort");
 % latestBatt = receive(Robot.subBatt,10);
 % ===<Initialize ROS2 Pub.>===
-Robot.pubLRng = ros2publisher(Robot.hostNode,"/cmd_lightring");
+Robot.pubLRng = ros2publisher(Robot.hostNode,"/cmd_lightring",...
+    "Reliability","besteffort");
 Robot.pubSund = ros2publisher(Robot.hostNode,"/cmd_audio");
 Robot.pubLAVL = ros2publisher(Robot.hostNode,"/cmd_vel",...
     "Reliability","besteffort");
@@ -37,6 +38,7 @@ Robot.subBttn = ros2subscriber(Robot.hostNode,"/interface_buttons",...
     "Reliability","besteffort");
 Robot.subBtry = ros2subscriber(Robot.hostNode,"/battery_state",...
     "Reliability","besteffort");
+% A test for subscriber callback, not used
 % Robot.subHzrd = ros2subscriber(Robot.hostNode,"/hazard_detection",...
     % @subHzrdCallback,...
     % "Reliability","besteffort");
@@ -44,8 +46,12 @@ Robot.subBtry = ros2subscriber(Robot.hostNode,"/battery_state",...
 % ===<Initialize Epoch Time>===
 latestHzrd = receive(Robot.subHzrd,3);
 Robot.epochROS2 = ros2StampToFloat(latestHzrd.header.stamp,0);
-disp('Epoch Time: ');
-disp(Robot.epochROS2);
+% disp('Epoch Time: ');
+% disp(Robot.epochROS2);
+% ===<Initialize Opti-Track>===
+Robot.olClient = Init_OverheadLocClient();
+nameoverID = load("Create3Names").nameoverID;
+Robot.olID = nameoverID(RobotName);
 end
 
 % function subHzrdCallback(message)

@@ -17,6 +17,15 @@ catch
     % rethrow(ME);
 end
 dataStore.Odom = [dataStore.Odom;[toc dataOdom]];
+%
+dataOLPose = nan(4,1);
+try
+    dataOLPose = Create_Optitrack_Pose(Robot.olID, Robot.olClient);
+catch 
+    disp("Error obtaining overhead localization pose");
+    % rethrow(ME);
+end
+dataStore.truthPose = [dataStore.truthPose; toc dataOLPose(1:3,1)'];
 end
 
 function data = lastValid(stream)
